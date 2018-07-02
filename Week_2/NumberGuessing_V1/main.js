@@ -40,6 +40,9 @@ var to = parseInt(prompt("Enter the higher bound between 0 and 1000."));
 var target = Math.round(Math.random() * (to - from) + from);
 
 var currentGuess = parseInt(prompt("Guess a number between " + from + " and " + to));
+    while (isNaN(currentGuess)){ 
+    currentGuess  = parseInt(prompt("Enter a number as a guess.")); 
+    }
     
 //loops if guess is outside range
     while (currentGuess > to || currentGuess < from) {
