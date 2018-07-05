@@ -1,5 +1,5 @@
 //define a circle object
-var circle = {
+/*var circle = {
     diameter: 80,
     xCoor: 0,
     yCoor: 0,
@@ -7,36 +7,77 @@ var circle = {
     xSpeed: 5,
     ySpeed: 5
 }
+*/
 
-function setup() {
-  createCanvas(640, 480);
-    background(20,55,76);
-    frameRate(50)
+//ellipse(x, y, w,)
+//ellipse(x, y, w, h)
+function Circle(x, y, size, color, xSpeed, ySpeed){
+    this.xCoor = x;
+    this.yCoor = y;
+    this.diameter = size;
+    this.color = color; //makes the default color black
+    this.xSpeed = xSpeed;
+    this.ySpeed = ySpeed;
 }
 
-function draw() {
-    fill(circle.color);
-    ellipse(circle.xCoor, circle.yCoor, circle.diameter);
+var circle = new Circle(0,0,80, [255,0,0], 2, 10);
+var circle2 = new Circle(0, 30, 50, 7, 7);
+var circleList = [circle, circle2, new Circle(100,0,18)];
+
+
+function setup() {
+    createCanvas(parseInt(prompt("Enter canvas width")),parseInt(prompt("Enter canvas height"))); //lets user choose canvas size
+    frameRate(50);
+}
+
+
+function randomColor(){
+    return[random(0, 255), random(0, 255), random(0, 255)];
+}
+
+
+//function chooses random number
+function numberSet(set){
+    var random = Math.floor(Math.random() * set.length);
+    return set[random];
+}
+
+//set of random numbers to choose from
+var balls = numberSet([2,5,9,16]);
+
+
+//empty array
+var circleList = [];
+
+
+//function that calls for the amount of balls drawn by adding balls into program until it meets the number set amount
+for(var numBall = 0; numBall < balls; numBall ++){
+    var circles = new Circle(0,0, 80, [Math.random()*255, Math.random() * 255, Math.random() *255], Math.random()*20, Math.random()*20); //new circle with random color and speed
+    circleList = circleList.concat([circles]); //adds new circles to empty array
+}
     
-    
-    //if we hit the right/left side of canvas
-    if(circle.xCoor > 640){
-        circle.color = [Math.random()*255, Math.random() * 255, Math.random() *255] //makes the circle random color
-        circle.xSpeed = -circle.xSpeed; //reverse direction
-    }else if(circle.xCoor <0){
-        circle.color = [Math.random() *255, Math.random() *255, Math.random()*255]; 
-        circle.xSpeed = -circle.xSpeed;
-    
-    //if hit top/bottom side of canvas
-    }else if(circle.yCoor < 0){
-        circle.diameter = Math.random()*100; //changes diameter by choosing a random number
-        circle.ySpeed = -circle.ySpeed; //reverses direction
-    }else if(circle.yCoor > 480){
-        circle.diameter = Math.random()*100;
-        circle.ySpeed = -circle.ySpeed;
+
+function draw(){
+    background(255,255,255); //sets background to white so no color of trails show
+
+    for(var i = 0; i < circleList.length; i++){
+        fill(circleList[i].color);
+        ellipse(circleList[i].xCoor, circleList[i].yCoor, circleList[i].diameter);
+        
+        //if we hit the right/left side of canvas
+        if(circleList[i].xCoor > width || circleList[i].xCoor <0){
+            circleList[i].color = [Math.random()*255, Math.random() * 255, Math.random() *255] //makes the circle random color
+            circleList[i].xSpeed = -circleList[i].xSpeed; //reverse direction
+
+
+        //if hit top/bottom side of canvas
+        }if(circleList[i].yCoor < 0 || circleList[i].yCoor > height){
+            circleList[i].diameter = Math.random()*100; //changes diameter by choosing a random number
+            circleList[i].ySpeed = -circleList[i].ySpeed; //reverses direction
+        }
+            
+        //changes position of circle
+        circleList[i].xCoor += circleList[i].xSpeed;
+        circleList[i].yCoor += circleList[i].ySpeed;
     }
-    
-    //changes position of circle
-    circle.xCoor += circle.xSpeed;
-    circle.yCoor += circle.ySpeed;
 }
